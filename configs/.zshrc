@@ -15,7 +15,11 @@ source $ZSH/oh-my-zsh.sh
 
 ##### custom OS settings
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  eval `dircolors ~/.dircolors`
+  eval `dircolors ~/.dircolors/linux`
+  alias ll='ls -al --color=auto'
+  alias ls='ls --color=auto'
+  source /usr/share/doc/fzf/examples/key-bindings.zsh
+  source /usr/share/doc/fzf/examples/completion.zsh
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   HB_PATHS="/opt/homebrew/opt/findutils/libexec/gnubin:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/gnu-indent/libexec/gnubin:/opt/homebrew/opt/findutils/libexec/gnubin:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/gnu-indent/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/gawk/libexec/gnubin:/opt/homebrew/bin/python3:/opt/homebrew/opt/socket_vmnet/bin:/opt/homebrew/opt/bc/bin:/opt/homebrew/opt/libpq/bin"
   export PATH="$HB_PATHS:$PATH"
@@ -41,6 +45,9 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
   export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
   alias sdf='cd ~/projects/git.mws-team.ru/infra/sdf'
   alias ss='lsof -Pi -n -Ts'
+  alias ll='gls -al --color=auto'
+  alias ls='gls --color=auto'
+  source <(fzf --zsh)
 fi
 ##### end custom OS settings
 
@@ -56,9 +63,13 @@ export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 ##### end exports
 
 
+##### misc
 autoload -U +X bashcompinit && bashcompinit
-source =(minikube completion zsh)
-source <(fzf --zsh)
+
+if which minikube >/dev/null 2>&1; then
+  source =(minikube completion zsh)
+fi
+##### end misc
 
 
 ##### functions
@@ -90,8 +101,6 @@ function gen_passwd(){
 
 ##### aliases
 alias less='less -iR'
-alias ll='ls -al'
-alias ls='gls --color=auto'
 alias m='minikube'
 alias t='tmux a -t'
 alias tmp='cd ~/projects/personnal/tmp'

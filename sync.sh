@@ -56,8 +56,12 @@ echo -e ${GREEN}"This script installs configurations from \`configs\` dir..."${C
 # Copy VIM settings
 test_and_update_file VIM "${HOME}/.vimrc" "${SCRIPT_DIR}/configs/.vimrc"
 
+# Copy DIRCOLORS settings
+test_and_update_dir DIRCOLORS "${HOME}/.dircolors" "${SCRIPT_DIR}/configs/dircolors"
+
 # Copy ZSH settings
 test_and_update_file ZSH "${HOME}/.zshrc" "${SCRIPT_DIR}/configs/.zshrc"
+echo -e ${YELLOW}"In order to reload ZSH, run \`source ~/.zshrc\`"${CLEAR}
 
 # Copy TMUX settings
 test_and_update_file TMUX "${HOME}/.tmux.conf" "${SCRIPT_DIR}/configs/.tmux.conf"
