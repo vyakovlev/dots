@@ -1,0 +1,12 @@
+views:
+  v1/pods:
+    columns:
+     - AGE
+     - NAMESPACE
+     - NAME
+     - IP
+     - NODE
+     - STATUS
+     - READY
+     - MEM/RL|S                                         # => 🌚 Overrides std resource default wide attribute via `S` for `Show`
+     - '%MEM/R|'                                        # => NOTE! column names with non alpha names need to be quoted as columns must be strings!

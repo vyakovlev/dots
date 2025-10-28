@@ -44,9 +44,9 @@ function test_and_update_dir(){
     if [[ ! -d "${cfg_dir}" ]]; then
         mkdir -p "${cfg_dir}"
     fi
-    read -p "Sync ${cfg_file} from code? [y/N]? " confirm
+    read -p "Sync ${cfg_dir} from code? [y/N]? " confirm
     if [[ $confirm == [Yy] ]]; then
-        rsync -avz -h -n --update "${src_dir}/" "${cfg_dir}/"
+        rsync -avz -h --update "${src_dir}/" "${cfg_dir}/"
     fi
     finish_installation ${program}
 }
@@ -55,6 +55,9 @@ echo -e ${GREEN}"This script installs configurations from \`configs\` dir..."${C
 
 # Copy VIM settings
 test_and_update_file VIM "${HOME}/.vimrc" "${SCRIPT_DIR}/configs/.vimrc"
+
+# Copy ZSH settings
+test_and_update_file ZSH "${HOME}/.zshrc" "${SCRIPT_DIR}/configs/.zshrc"
 
 # Copy TMUX settings
 test_and_update_file TMUX "${HOME}/.tmux.conf" "${SCRIPT_DIR}/configs/.tmux.conf"
