@@ -21,3 +21,4 @@ __pycache__
 /configs/k9s/benchmarks
 /configs/k9s/screen-dumps
 /configs/k9s/benchmarks
+/configs/k9s/clusters

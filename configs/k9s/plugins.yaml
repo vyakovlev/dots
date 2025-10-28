@@ -46,13 +46,13 @@ plugins:
     description: Add debug container
     dangerous: true
     scopes:
-      - containers
+    - containers
     command: bash
     background: false
     confirm: true
     args:
-      - -c
-      - "kubectl --kubeconfig=$KUBECONFIG debug -it --context $CONTEXT -n=$NAMESPACE $POD --target=$NAME --image=nicolaka/netshoot:v0.14 --share-processes -- bash"
+    - -c
+    - "kubectl --kubeconfig=$KUBECONFIG debug -it --context $CONTEXT -n=$NAMESPACE $POD --target=$NAME --image=nicolaka/netshoot:v0.14 --share-processes -- bash"
 
   # Use Dive image layers
   dive:
@@ -60,36 +60,60 @@ plugins:
     confirm: false
     description: "Dive image"
     scopes:
-      - containers
+    - containers
     command: dive
     background: false
     args:
-      - $COL-IMAGE
+    - $COL-IMAGE
 
   helm-diff-previous:
     shortCut: Shift-D
     confirm: false
     description: Diff with Previous Revision
     scopes:
-      - helm
+    - helm
     command: bash
     background: false
     args:
-      - -c
-      - >-
-        LAST_REVISION=$(($COL-REVISION-1));
-        helm diff revision $COL-NAME $COL-REVISION $LAST_REVISION --kube-context $CONTEXT --namespace $NAMESPACE --color | less -RK
+    - -c
+    - >-
+      LAST_REVISION=$(($COL-REVISION-1)); helm diff revision $COL-NAME $COL-REVISION $LAST_REVISION --kube-context $CONTEXT --namespace $NAMESPACE --color | less -RK
   helm-diff-current:
     shortCut: Shift-Q
     confirm: false
     description: Diff with Current Revision
     scopes:
-      - history
+    - history
     command: bash
     background: false
     args:
-      - -c
-      - >-
-        RELEASE_NAME=$(echo $NAME | cut -d':' -f1);
-        LATEST_REVISION=$(helm history -n $NAMESPACE --kube-context $CONTEXT $RELEASE_NAME | grep deployed | cut -d$'\t' -f1 | tr -d ' \t');
-        helm diff revision $RELEASE_NAME $LATEST_REVISION $COL-REVISION --kube-context $CONTEXT --namespace $NAMESPACE --color | less -RK
+    - -c
+    - >-
+      RELEASE_NAME=$(echo $NAME | cut -d':' -f1); LATEST_REVISION=$(helm history -n $NAMESPACE --kube-context $CONTEXT $RELEASE_NAME | grep deployed | cut -d$'\t' -f1 | tr -d ' \t'); helm diff revision $RELEASE_NAME $LATEST_REVISION $COL-REVISION --kube-context $CONTEXT --namespace $NAMESPACE --color | less -RK
+
+  # watch events on selected resources
+  # requires linux "watch" command
+  # change '-n' to adjust refresh time in seconds
+  watch-events:
+    shortCut: Shift-E
+    confirm: false
+    description: Get Events
+    scopes:
+    - all
+    command: sh
+    background: false
+    args:
+    - -c
+    - "kubectl events --context $CONTEXT --namespace $NAMESPACE --for $RESOURCE_NAME.${RESOURCE_GROUP:+.RESOURCE_GROUP}/$NAME --watch"
+
+  apply:
+    shortCut: Shift-P
+    confirm: false
+    background: false
+    description: "Apply from editor"
+    scopes:
+    - all
+    command: bash
+    args:
+    - -c
+    - "vim /tmp/k9s-apply.yaml && cat /tmp/k9s-apply.yaml | kubectl --namespace $NAMESPACE --context $CONTEXT apply -f -"

@@ -1,0 +1,18 @@
+{
+  "description": "Disable ⌘+M to minimize a window",
+  "manipulators": [
+    {
+      "type": "basic",
+      "from": {
+          "key_code": "m",
+          "modifiers": { "mandatory": ["command"] }
+      },
+      "to": [
+        {
+          "key_code": "m",
+          "modifiers": ["left_command", "left_shift", "left_control"]
+      }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "description": "Proper ~ & ё on macbook pro short keyboard",
+  "manipulators": [
+    {
+      "type": "basic",
+      "conditions": [
+        {
+          "input_sources": [{ "language": "en" }],
+          "type": "input_source_if"
+        },
+        {
+          "type": "device_if",
+          "identifiers": [
+            {
+              "is_built_in_keyboard": true
+            }
+          ]
+        }
+      ],
+      "from": {
+          "key_code": "grave_accent_and_tilde",
+          "modifiers": { "optional": ["any"] }
+      },
+      "to": [
+        {
+          "key_code": "non_us_backslash",
+          "modifiers": []
+      }
+      ]
+    }
+  ]
+}
