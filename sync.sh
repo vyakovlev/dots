@@ -15,7 +15,7 @@ function start_installation(){
 }
 
 function finish_installation(){
-    echo -e ${GREEN}"Done $1 config."${CLEAR}
+    echo -e "Done with $1."${CLEAR}
 }
 
 function test_and_update_file(){
@@ -65,6 +65,7 @@ echo -e ${YELLOW}"In order to reload ZSH, run \`source ~/.zshrc\`"${CLEAR}
 
 # Copy TMUX settings
 test_and_update_file TMUX "${HOME}/.tmux.conf" "${SCRIPT_DIR}/configs/.tmux.conf"
+test_and_update_dir TMUX-PLUGINS "${HOME}/.tmux" "${SCRIPT_DIR}/configs/tmux"
 echo -e ${YELLOW}"In order to reload TMUX server, run \`tmux source-file ~/.tmux.conf\`, then install plugins with prefix + I "${CLEAR}
 
 # Copy K9S settings
