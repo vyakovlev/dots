@@ -11,3 +11,7 @@ use custom plugins, set vim keybindings, huge history, etc
 
 ### k9s
 misc settings & plugins for k9s
+
+
+# for MacOS only
+[Karabiner-elements custom modifications](other/karabiner-elements/README.md)
