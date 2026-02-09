@@ -53,6 +53,15 @@ function test_and_update_dir(){
 
 echo -e ${GREEN}"This script installs configurations from \`configs\` dir..."${CLEAR}
 
+echo -e "Checking if fzf is present..."
+if ! which fzf 1>/dev/null 2>&1; then
+    echo -e "${YELLOW}fzf is NOT present${CLEAR}, install it with homebrew or follow these steps for linux:"
+    echo "curl -L -o /tmp/fzf.tar.gz https://github.com/junegunn/fzf/releases/download/v0.67.0/fzf-0.67.0-linux_amd64.tar.gz"
+    echo "sudo tar -C /usr/local/bin -xf /tmp/fzf.tar.gz"
+    echo "sudo chmod +x /usr/local/bin/fzf"
+    sleep 1
+fi
+
 # Copy VIM settings
 test_and_update_file VIM "${HOME}/.vimrc" "${SCRIPT_DIR}/configs/.vimrc"
 
