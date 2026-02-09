@@ -62,6 +62,13 @@ if ! which fzf 1>/dev/null 2>&1; then
     sleep 1
 fi
 
+echo -e "Checking if direnv is present..."
+if ! which direnv 1>/dev/null 2>&1; then
+    echo -e "${YELLOW}direnv is NOT present${CLEAR}, install it with homebrew or follow these steps for linux:"
+    echo "sudo apt-get update && sudo apt-get install direnv --no-install-recommends -y"
+    sleep 1
+fi
+
 # Copy VIM settings
 test_and_update_file VIM "${HOME}/.vimrc" "${SCRIPT_DIR}/configs/.vimrc"
 
