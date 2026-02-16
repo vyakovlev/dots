@@ -15,25 +15,23 @@ plugins=(git ansible brew direnv docker docker-compose fzf helm k9s kubectl kube
 source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+if [[ -r ~/work.sh ]]; then
+  # define protected vars
+  source ~/work.sh
+fi
 
 ##### custom OS settings
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   eval `dircolors ~/.dircolors/linux`
-  alias ll='ls -al --color=auto'
   alias ls='ls --color=auto'
-  source /usr/share/doc/fzf/examples/key-bindings.zsh
-  source /usr/share/doc/fzf/examples/completion.zsh
+  alias ll='ls -al --color=auto'
+  alias lt='ls --color=auto -ltrh'
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   HB_PATHS="/opt/homebrew/opt/findutils/libexec/gnubin:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/gnu-indent/libexec/gnubin:/opt/homebrew/opt/findutils/libexec/gnubin:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/gnu-indent/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/gawk/libexec/gnubin:/opt/homebrew/bin/python3:/opt/homebrew/opt/socket_vmnet/bin:/opt/homebrew/opt/bc/bin:/opt/homebrew/opt/libpq/bin"
   export PATH="$HB_PATHS:$PATH"
   export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
   export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
   export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
-  export GOPRIVATE=git.dev.cloud.mts.ru,git.mws-team.ru
-  export GOPROXY=https://nexus.mws-team.ru/repository/golang-internal/
-  export GONOPROXY=none
-  export GOSUMDB="sum.golang.org https://nexus.mws-team.ru/repository/golang-sumdb/"
-  export GONOSUMDB=git.dev.cloud.mts.ru/*,git.mws-team.ru/*
   if [ -d "${USER}/mws/bin" ]; then
     export PATH="${PATH}:${USER}/mws/bin"
   fi
@@ -46,11 +44,10 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
   eval $(gdircolors ~/.dircolors/dircolors.ansi-dark)
   export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
   export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
-  alias sdf='cd ~/projects/git.mws-team.ru/infra/sdf'
   alias ss='lsof -Pi -n -Ts'
   alias ll='gls -al --color=auto'
   alias ls='gls --color=auto'
-  source <(fzf --zsh)
+  alias lt='gls --color=auto -ltrh'
 fi
 ##### end custom OS settings
 
@@ -61,7 +58,7 @@ export K9S_CONFIG_DIR="${USER}/k9s"
 export KUBE_EDITOR=vim
 export LANG=en_US.UTF-8
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 ##### end exports
 
@@ -72,6 +69,8 @@ autoload -U +X bashcompinit && bashcompinit
 if which minikube >/dev/null 2>&1; then
   source =(minikube completion zsh)
 fi
+
+source <(fzf --zsh)
 ##### end misc
 
 
