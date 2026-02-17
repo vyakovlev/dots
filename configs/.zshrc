@@ -8,7 +8,8 @@ zstyle :omz:plugins:ssh-agent lazy yes
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
-zstyle ':omz:update' mode disabled  # disable automatic updates
+zstyle ':omz:update' mode auto
+zstyle ':omz:update' frequency 20
 HIST_STAMPS="dd.mm.yyyy"
 plugins=(git ansible brew direnv docker docker-compose fzf helm k9s kubectl kubectx ssh-agent)
 
