@@ -70,7 +70,13 @@ if which minikube >/dev/null 2>&1; then
   source =(minikube completion zsh)
 fi
 
-source <(fzf --zsh)
+if which k9s >/dev/null 2>&1; then
+  source =(k9s completion zsh)
+fi
+
+if which fzf >/dev/null 2>&1; then
+  source =(fzf --zsh)
+fi
 ##### end misc
 
 
