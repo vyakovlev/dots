@@ -114,3 +114,6 @@ alias m='minikube'
 alias t='tmux a -t'
 alias tmp='cd ~/projects/personnal/tmp'
 ##### end aliases
+
+typeset -aU precmd_functions
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
