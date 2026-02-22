@@ -65,7 +65,8 @@ fi
 echo -e "Checking if direnv is present..."
 if ! which direnv 1>/dev/null 2>&1; then
     echo -e "${YELLOW}direnv is NOT present${CLEAR}, install it with homebrew or follow these steps for linux:"
-    echo "sudo apt-get update && sudo apt-get install direnv --no-install-recommends -y"
+    echo "curl -sfL https://direnv.net/install.sh | bash"
+    echo "Direnv below 2.37 has issues with Python deprecations, so a deb package will not work unless it's Ubuntu 26."
     sleep 1
 fi
 
