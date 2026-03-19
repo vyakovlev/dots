@@ -121,6 +121,18 @@ function set_proxy(){
       https_proxy=${proxy} \
       HTTPS_PROXY=${proxy}
 }
+
+function tmux_send_all(){
+  # sends a command to all tmux panes (e.g. git pull or source ~/.zshrc)
+  # example: tmux_send_all source ~/.zshrc
+  tmux list-panes -a | cut -d' ' -f1 | cut -d: -f1,2 | xargs -I PANE tmux send-keys -t PANE "$*" ENTER
+}
+
+function glall(){
+  # gl (git pull alias from oh-my-zsh) + all (everywhere for faster typing)
+  # updates code in all panes that are in git projects (cwd has .git)
+  tmux_send_all "bash -c 'echo Pulling code if a git project; [[ -d .git ]] && git pull'"
+}
 ###### end functions
 
 
