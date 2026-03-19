@@ -36,16 +36,13 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
   if [ -d "${USER}/mws/bin" ]; then
     export PATH="${PATH}:${USER}/mws/bin"
   fi
-  if [ -f "${USER}/mws/completion/devscan_completion.zsh.inc" ]; then
-    source "${USER}/mws/completion/devscan_completion.zsh.inc"
-  fi
   if [ -f /opt/homebrew/bin/terraform ]; then
     complete -o nospace -C /opt/homebrew/bin/terraform terraform
   fi
   eval $(gdircolors ~/.dircolors/dircolors.ansi-dark)
   export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
   export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
-  alias ss='lsof -Pi -n -Ts'
+  alias ss='lsof -Pi -n -Ts'  # make ss-like output on macos
   alias ll='gls -al --color=auto'
   alias ls='gls --color=auto'
   alias lt='gls --color=auto -ltrh'
@@ -83,10 +80,12 @@ fi
 
 ##### functions
 function get_main(){
+  # gets a master branch from master or main
   git branch --list master main | grep -Eo 'm[a-z]+'
 }
 
 funtion clean_switch(){
+  # returns to master branch and cleans orphan / obsolete branches after a MR has been passed
   local main_branch="$(git branch --list master main | grep -Eo 'm[a-z]+')"
   git checkout "${main_branch}"
   git pull
@@ -96,6 +95,7 @@ funtion clean_switch(){
 }
 
 function make_mr(){
+  # creates a MR on gitlab: source branch should be deleted, auto-assign to my colleagues
   local extra=$1
   # run with --force to force-push
   git push ${extra} -o merge_request.create -o merge_request.should_remove_source_branch \
@@ -103,17 +103,35 @@ function make_mr(){
 }
 
 function gen_passwd(){
+  # generates a simple random password
   python3 -c 'import os,base64; print(base64.urlsafe_b64encode(os.urandom(32)).decode())'
+}
+
+function set_proxy(){
+  # sets proxy for console utilities to either default or passed as argument
+  # run examples:
+  # set_proxy
+  # set_proxy http://localhost:3128
+  local p="$1"
+  local proxy="socks://127.0.0.1:10808"
+  [[ $p =~ :// ]] && proxy="$p"
+  echo "Setting proxy to ${proxy}"
+  export http_proxy=${proxy} \
+      HTTP_PROXY=${proxy} \
+      https_proxy=${proxy} \
+      HTTPS_PROXY=${proxy}
 }
 ###### end functions
 
 
 ##### aliases
-alias less='less -iR'
+alias less='less -iR'  # always ignore case & show colored output
 alias m='minikube'
-alias t='tmux a -t'
-alias tmp='cd ~/projects/personnal/tmp'
+alias t='tmux a -t'  # easy attach to a tmux session, autocompletion works
+alias tmp='cd ~/projects/personnal/tmp'  # my default tmp dir
+alias vy='cd ~/projects/vyakovlev'  # my default user dir
 ##### end aliases
 
+# allows to run commands on setting load without raising p10k errors
 typeset -aU precmd_functions
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
