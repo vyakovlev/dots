@@ -24,6 +24,10 @@ function test_and_update_file(){
     local src_file="$3"
     start_installation ${program}
     if [[ -f "${cfg_file}" ]]; then
+        if diff -q "${src_file}" "${cfg_file}" >/dev/null; then
+            echo "Already up to date."
+            return
+        fi
         echo -e ${YELLOW}"Diff between \"${src_file}\" \"${cfg_file}\"..."${CLEAR}
         diff "${src_file}" "${cfg_file}"
         read -p "Override ${cfg_file}? [y/N]? " confirm
@@ -57,8 +61,7 @@ echo -e "Checking if fzf is present..."
 if ! which fzf 1>/dev/null 2>&1; then
     echo -e "${YELLOW}fzf is NOT present${CLEAR}, install it with homebrew or follow these steps for linux:"
     echo "curl -L -o /tmp/fzf.tar.gz https://github.com/junegunn/fzf/releases/download/v0.67.0/fzf-0.67.0-linux_amd64.tar.gz"
-    echo "sudo tar -C /usr/local/bin -xf /tmp/fzf.tar.gz"
-    echo "sudo chmod +x /usr/local/bin/fzf"
+    echo "sudo tar -C /usr/local/bin -xf /tmp/fzf.tar.gz && sudo chmod +x /usr/local/bin/fzf && rm /tmp/fzf.tar.gz"
     sleep 1
 fi
 
@@ -67,6 +70,13 @@ if ! which direnv 1>/dev/null 2>&1; then
     echo -e "${YELLOW}direnv is NOT present${CLEAR}, install it with homebrew or follow these steps for linux:"
     echo "curl -sfL https://direnv.net/install.sh | bash"
     echo "Direnv below 2.37 has issues with Python deprecations, so a deb package will not work unless it's Ubuntu 26."
+    sleep 1
+fi
+
+echo -e "Checking if uv is present..."
+if ! which uv 1>/dev/null 2>&1; then
+    echo -e "${YELLOW}uv is NOT present${CLEAR}, install it with homebrew or follow these steps for linux:"
+    echo "curl -LsSf https://astral.sh/uv/install.sh | sh"
     sleep 1
 fi
 
