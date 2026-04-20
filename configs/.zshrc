@@ -11,7 +11,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 zstyle ':omz:update' mode auto
 zstyle ':omz:update' frequency 20
 HIST_STAMPS="dd.mm.yyyy"
-plugins=(ansible brew direnv docker docker-compose fzf git helm k9s kubectl kubectx ssh-agent uv)
+plugins=(ansible brew direnv docker docker-compose fzf git helm k9s kubectl kubectx podman ssh-agent uv)
 
 source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
